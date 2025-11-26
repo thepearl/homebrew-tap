@@ -3,7 +3,7 @@ class XcodeJanitorMcp < Formula
   homepage "https://github.com/thepearl/xcode-janitor-mcp"
   url "https://github.com/thepearl/xcode-janitor-mcp.git",
       tag:      "v0.12.0",
-      revision: "4eda2af96ab49237ec24772f4b44c064845cb7db"
+      revision: "10a2db3129766a91b7c50aabe68fd57a1bbd4182"
   license "MIT"
   head "https://github.com/thepearl/xcode-janitor-mcp.git", branch: "main"
 
