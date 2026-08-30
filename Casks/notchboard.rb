@@ -24,8 +24,8 @@
 # comment of its own, because rubocop's Cask/StanzaGrouping cop treats a comment as a
 # group break and then demands blank lines that the same cop rejects.
 cask "notchboard" do
-  version "1.0"
-  sha256 "08b20ab802fb8cd5e83fe05b7c2481ded051b3b4f64772bc5e1c4d1102ab873d"
+  version "1.1"
+  sha256 "976e7952f43cb6f92e7b2d12faa038662b7bea3f0bfa073d8ab26158e35c74e0"
 
   url "https://github.com/thepearl/notchboard/releases/download/v#{version}/notchboard-#{version}.zip"
   name "Notchboard"
