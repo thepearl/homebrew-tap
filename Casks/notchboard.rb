@@ -1,13 +1,17 @@
 # Cask definition for a personal tap, not for homebrew/cask.
 #
 # Notchboard does not meet the homebrew/cask acceptance criteria yet (the thresholds and
-# what is missing are written out in docs/RELEASING.md), so this file exists to be copied
+# what is missing are written out in website/content/docs/documentation/releasing.mdx), so this file exists to be copied
 # into a tap repository as Casks/notchboard.rb:
 #
 #   brew tap thepearl/tap
+#   brew trust thepearl/tap
 #   brew install --cask notchboard
 #
 # or in one line: brew install --cask thepearl/tap/notchboard
+#
+# The trust line is for Homebrew 6, which refuses to load a third-party tap the user has
+# not trusted.
 #
 # The zap paths below are read out of the source, not guessed:
 #   ~/Library/Application Support/Notchboard  Persistence/AppStateStore.swift
@@ -17,15 +21,18 @@
 # Keychain items, and deleting the login keychain would take everything else with it).
 # They are listed under the zap stanza with the commands that clear them by hand.
 #
-# The sha256 is the checksum of the final zip attached to the GitHub release: signed,
-# notarised, stapled, then zipped one last time (every re-zip changes it, so only the
-# last one counts). Homebrew checks the download against that line, so a stale value
-# fails the install loudly instead of installing the wrong build. It cannot carry a
-# comment of its own, because rubocop's Cask/StanzaGrouping cop treats a comment as a
-# group break and then demands blank lines that the same cop rejects.
+# The version and sha256 lines are placeholders. The release workflow
+# (.github/workflows/release.yml) copies this whole file into the tap and stamps only
+# those two lines on the copy, so everything else here is what users install
+# (vision.md §13.20). The sha256 is the checksum of the final zip attached to the GitHub
+# release: signed, notarised, stapled, then zipped one last time (every re-zip changes
+# it, so only the last one counts). Homebrew checks the download against that line, so a
+# stale value fails the install loudly instead of installing the wrong build. Neither
+# line can carry a comment of its own, because rubocop's Cask/StanzaGrouping cop treats
+# a comment as a group break and then demands blank lines that the same cop rejects.
 cask "notchboard" do
-  version "1.1"
-  sha256 "976e7952f43cb6f92e7b2d12faa038662b7bea3f0bfa073d8ab26158e35c74e0"
+  version "1.2"
+  sha256 "bf992aafce15653b52c0f79af820eb81c66ece77fcbfb012be8afe7ae609a006"
 
   url "https://github.com/thepearl/notchboard/releases/download/v#{version}/notchboard-#{version}.zip"
   name "Notchboard"
@@ -37,9 +44,14 @@ cask "notchboard" do
     strategy :github_latest
   end
 
-  # A bare symbol is the minimum, not an exact match: this resolves to macOS >= 14, which
-  # is MACOSX_DEPLOYMENT_TARGET. The ">= :sonoma" string spelling means the same thing but
-  # Homebrew now deprecates it and warns on every load.
+  # auto_updates says the app updates itself, through Sparkle. On Homebrew 6 a plain
+  # `brew upgrade` still upgrades this cask when the installed bundle's version is older
+  # than the tap's, and `brew upgrade --greedy-auto-updates` forces it (vision.md §13.20).
+  # For depends_on, a bare symbol is the minimum, not an exact match: this resolves to
+  # macOS >= 14, which is MACOSX_DEPLOYMENT_TARGET. The ">= :sonoma" string spelling means
+  # the same thing but Homebrew now deprecates it and warns on every load. One comment
+  # covers both stanzas because they form one rubocop stanza group (see the header).
+  auto_updates true
   depends_on macos: :sonoma
 
   app "notchboard.app"
